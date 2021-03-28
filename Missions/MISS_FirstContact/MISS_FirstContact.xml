@@ -1,0 +1,917 @@
+<mission_data version="2.7" background_id_arme="3a640e7b-333c-466d-8fb3-2705854bb779" playerShipNames_arme="Artemis\Intrepid\Aegis\Horatio\Excalibur\Hera\Ceres\Diana">
+  <mission_description>The first contact between Terrans and the Kraliens in the Orion sector.</mission_description>
+  <start id_arme="3a640e7b-333c-466d-8fb3-2705854bb779">
+    <create type="station" x="50000.0" y="0.0" z="50000.0" name="TSB Orion" raceKeys="Terran" hullKeys="Command Base" sideValue="2" />
+    <create type="player" player_slot="0" x="49000.0" y="0.0" z="50000.0" angle="0" name="Artemis" sideValue="2" raceKeys="TSN" hullKeys="Light Cruiser" warp="yes" jump="no" />
+    <create type="station" x="10387.0" y="0.0" z="49768.0" name="DS1" raceKeys="Terran" hullKeys="Science Base" sideValue="2" />
+    <create type="station" x="30495.0" y="0.0" z="88779.0" name="DS2" raceKeys="Terran" hullKeys="Deep Space Base" sideValue="2" />
+    <create type="station" x="69321.0" y="0.0" z="88965.0" name="DS3" raceKeys="Terran" hullKeys="Civilian Base" sideValue="2" />
+    <create type="station" x="94340.0" y="0.0" z="49397.0" name="DS4" raceKeys="Terran" hullKeys="Deep Space Base" sideValue="2" />
+    <create type="station" x="70248.0" y="0.0" z="8810.0" name="DS5" raceKeys="Terran" hullKeys="Industrial Base" sideValue="2" />
+    <create type="station" x="31421.0" y="0.0" z="8254.0" name="DS6" raceKeys="Terran" hullKeys="Civilian Base" sideValue="2" />
+    <create type="neutral" x="64502.0" y="0.0" z="29938.0" angle="45" name="CST Buckeye" raceKeys="Terran" hullKeys="Bulk Cargo" sideValue="2" fleetnumber="-1" />
+    <create type="neutral" x="31143.0" y="0.0" z="49212.0" angle="180" name="CST Madrigal" raceKeys="Terran" hullKeys="Bulk Cargo" sideValue="2" fleetnumber="-1" />
+    <create type="neutral" x="50047.0" y="0.0" z="73027.0" angle="45" name="CST Terrapin" raceKeys="Terran" hullKeys="Bulk Cargo" sideValue="2" fleetnumber="-1" />
+    <create type="neutral" x="80255.0" y="0.0" z="69042.0" angle="330" name="CST Mayflower" raceKeys="Terran" hullKeys="Bulk Cargo" sideValue="2" fleetnumber="-1" />
+    <set_difficulty_level value="1" />
+    <set_skybox_index index="10" />
+    <set_object_property property="nebulaIsOpaque" value="1" />
+    <set_object_property property="sensorSetting" value="1" />
+    <set_object_property property="nonPlayerSpeed" value="100" />
+    <set_object_property property="nonPlayerShield" value="100" />
+    <set_object_property property="nonPlayerWeapon" value="100" />
+    <set_object_property property="playerWeapon" value="100" />
+    <set_object_property property="playerShields" value="100" />
+    <set_timer name="addShipAI" seconds="2" />
+    <set_variable name="shipAICleared" value="0.0" integer="yes" />
+    <set_timer name="unregShip" seconds="300" />
+    <set_variable name="unregShipArrived" value="0.0" integer="yes" />
+    <set_variable name="stationsVisited" value="0.0" integer="yes" />
+    <set_variable name="checkedDS1" value="0.0" integer="yes" />
+    <set_variable name="checkedDS2" value="0.0" integer="yes" />
+    <set_variable name="checkedDS3" value="0.0" integer="yes" />
+    <set_variable name="checkedDS4" value="0.0" integer="yes" />
+    <set_variable name="checkedDS5" value="0.0" integer="yes" />
+    <set_variable name="checkedDS6" value="0.0" integer="yes" />
+    <set_gm_button text="Start First Contact" />
+  </start>
+  <folder_arme name="Commercial Traffic" id_arme="65d4f17b-c60c-4a39-baea-b5d48eba249c" expanded_arme="" />
+  <event name="Clear AI" id_arme="c6e80213-85e8-4a9f-8123-2ba50f02a615" parent_id_arme="65d4f17b-c60c-4a39-baea-b5d48eba249c">
+    <if_timer_finished name="addShipAI" />
+    <if_variable name="shipAICleared" comparator="EQUALS" value="0.0" />
+    <clear_ai name="CST Madrigal" />
+    <clear_ai name="CST Buckeye" />
+    <clear_ai name="CST Mayflower" />
+    <clear_ai name="CST Terrapin" />
+    <set_variable name="shipAICleared" value="1.0" integer="yes" />
+    <set_variable name="madrigalDest" value="2.0" integer="yes" />
+    <set_variable name="buckeyeDest" value="6.0" integer="yes" />
+    <set_variable name="mayflowerDest" value="4.0" integer="yes" />
+    <set_variable name="terrapinDest" value="1.0" integer="yes" />
+    <set_variable name="setTerrapin" value="1.0" integer="yes" />
+    <set_variable name="setMayflower" value="1.0" integer="yes" />
+    <set_variable name="setMadrigal" value="1.0" integer="yes" />
+    <set_variable name="setBuckeye" value="1.0" integer="yes" />
+  </event>
+  <folder_arme name="CST Buckeye" id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830" parent_id_arme="65d4f17b-c60c-4a39-baea-b5d48eba249c" expanded_arme="" />
+  <event name="arriveDS1" id_arme="06ad75f4-3816-4e60-9c22-ccc522b444d3" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="setBuckeye" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Buckeye" name2="DS1" comparator="LESS" value="1000.0" />
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="1.0" />
+    <set_variable name="setBuckeye" value="1.0" integer="yes" />
+    <set_variable name="buckeyeDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS2" id_arme="45156950-5868-4699-874e-4edfdd7b57aa" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="setBuckeye" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Buckeye" name2="DS2" comparator="LESS" value="1000.0" />
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="2.0" />
+    <set_variable name="setBuckeye" value="1.0" integer="yes" />
+    <set_variable name="buckeyeDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS3" id_arme="636e744f-8ca2-404e-ac27-82ed4dc4f869" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="setBuckeye" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Buckeye" name2="DS3" comparator="LESS" value="1000.0" />
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="3.0" />
+    <set_variable name="setBuckeye" value="1.0" integer="yes" />
+    <set_variable name="buckeyeDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS4" id_arme="d7f35617-018f-46a1-8879-74b251d759ff" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="setBuckeye" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Buckeye" name2="DS4" comparator="LESS" value="1000.0" />
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="4.0" />
+    <set_variable name="setBuckeye" value="1.0" integer="yes" />
+    <set_variable name="buckeyeDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS5" id_arme="6b4cc134-6f19-4d41-b25e-ce89f82f90e0" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="setBuckeye" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Buckeye" name2="DS5" comparator="LESS" value="1000.0" />
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="5.0" />
+    <set_variable name="setBuckeye" value="1.0" integer="yes" />
+    <set_variable name="buckeyeDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS6" id_arme="8cff9698-b911-4c56-8e44-47f68f9ed2d3" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="setBuckeye" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Buckeye" name2="DS6" comparator="LESS" value="1000.0" />
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="6.0" />
+    <set_variable name="setBuckeye" value="1.0" integer="yes" />
+    <set_variable name="buckeyeDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="destDS1" id_arme="8808b6e6-b18b-4852-82de-bc31eae8fe0b" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="1.0" />
+    <if_variable name="setBuckeye" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Buckeye" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Buckeye" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS1" value2="1" name="CST Buckeye" />
+    <set_variable name="setBuckeye" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS2" id_arme="f16572d8-8685-4b96-b3d3-29003beeb8cf" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="2.0" />
+    <if_variable name="setBuckeye" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Buckeye" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Buckeye" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS2" value2="1" name="CST Buckeye" />
+    <set_variable name="setBuckeye" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS3" id_arme="19423294-bc61-436f-990c-76ee64a7d42a" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="3.0" />
+    <if_variable name="setBuckeye" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Buckeye" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Buckeye" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS3" value2="1" name="CST Buckeye" />
+    <set_variable name="setBuckeye" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS4" id_arme="527e6576-68e8-4260-84cc-990a5e8a33fc" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="4.0" />
+    <if_variable name="setBuckeye" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Buckeye" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Buckeye" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS4" value2="1" name="CST Buckeye" />
+    <set_variable name="setBuckeye" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS5" id_arme="5c0195a3-6b16-4c33-9ac6-1a4f50ef4a73" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="5.0" />
+    <if_variable name="setBuckeye" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Buckeye" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Buckeye" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS5" value2="1" name="CST Buckeye" />
+    <set_variable name="setBuckeye" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS6" id_arme="dd294013-ac78-4abb-ac9f-63a9345775a9" parent_id_arme="b6898906-45c0-48d2-b99f-a2e4106a3830">
+    <if_variable name="buckeyeDest" comparator="EQUALS" value="6.0" />
+    <if_variable name="setBuckeye" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Buckeye" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Buckeye" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS6" value2="1" name="CST Buckeye" />
+    <set_variable name="setBuckeye" value="0.0" integer="yes" />
+  </event>
+  <folder_arme name="CST Madrigal" id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1" parent_id_arme="65d4f17b-c60c-4a39-baea-b5d48eba249c" />
+  <event name="arriveDS1" id_arme="69cf32b9-6c36-436a-a515-af32061ceb3f" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="setMadrigal" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Madrigal" name2="DS1" comparator="LESS" value="1000.0" />
+    <if_variable name="madrigalDest" comparator="EQUALS" value="1.0" />
+    <set_variable name="setMadrigal" value="1.0" integer="yes" />
+    <set_variable name="madrigalDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS2" id_arme="0418d510-0688-4d1b-96be-a1d92f7b97fc" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="setMadrigal" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Madrigal" name2="DS2" comparator="LESS" value="1000.0" />
+    <if_variable name="madrigalDest" comparator="EQUALS" value="2.0" />
+    <set_variable name="setMadrigal" value="1.0" integer="yes" />
+    <set_variable name="madrigalDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS3" id_arme="0cf8b683-ee76-4736-9a31-f15d5726eb8c" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="setMadrigal" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Madrigal" name2="DS3" comparator="LESS" value="1000.0" />
+    <if_variable name="madrigalDest" comparator="EQUALS" value="3.0" />
+    <set_variable name="setMadrigal" value="1.0" integer="yes" />
+    <set_variable name="madrigalDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS4" id_arme="4ea0f8ce-df34-4136-9c30-d069f5b7b302" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="setMadrigal" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Madrigal" name2="DS4" comparator="LESS" value="1000.0" />
+    <if_variable name="madrigalDest" comparator="EQUALS" value="4.0" />
+    <set_variable name="setMadrigal" value="1.0" integer="yes" />
+    <set_variable name="madrigalDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS5" id_arme="22dffe4a-c689-41ce-ad5a-a4a38239812f" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="setMadrigal" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Madrigal" name2="DS5" comparator="LESS" value="1000.0" />
+    <if_variable name="madrigalDest" comparator="EQUALS" value="5.0" />
+    <set_variable name="setMadrigal" value="1.0" integer="yes" />
+    <set_variable name="madrigalDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS6" id_arme="86e9c70b-1fcf-4559-959b-0f03d7a7370e" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="setMadrigal" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Madrigal" name2="DS6" comparator="LESS" value="1000.0" />
+    <if_variable name="madrigalDest" comparator="EQUALS" value="6.0" />
+    <set_variable name="setMadrigal" value="1.0" integer="yes" />
+    <set_variable name="madrigalDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="destDS1" id_arme="2bd2fdde-f688-47d3-a254-791ae7cc8c93" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="madrigalDest" comparator="EQUALS" value="1.0" />
+    <if_variable name="setMadrigal" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Madrigal" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Madrigal" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS1" value2="1" name="CST Madrigal" />
+    <set_variable name="setMadrigal" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS2" id_arme="cc725be8-9812-4ae6-829a-00a301fe5ec3" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="madrigalDest" comparator="EQUALS" value="2.0" />
+    <if_variable name="setMadrigal" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Madrigal" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Madrigal" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS2" value2="1" name="CST Madrigal" />
+    <set_variable name="setMadrigal" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS3" id_arme="1755d984-8467-4d8a-85a8-a70a11982aae" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="madrigalDest" comparator="EQUALS" value="3.0" />
+    <if_variable name="setMadrigal" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Madrigal" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Madrigal" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS3" value2="1" name="CST Madrigal" />
+    <set_variable name="setMadrigal" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS4" id_arme="b140764a-3346-4c5e-8f85-c11a73656239" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="madrigalDest" comparator="EQUALS" value="4.0" />
+    <if_variable name="setMadrigal" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Madrigal" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Madrigal" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS4" value2="1" name="CST Madrigal" />
+    <set_variable name="setMadrigal" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS5" id_arme="748366dd-d41a-4132-a5be-00a0919b706b" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="madrigalDest" comparator="EQUALS" value="5.0" />
+    <if_variable name="setMadrigal" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Madrigal" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Madrigal" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS5" value2="1" name="CST Madrigal" />
+    <set_variable name="setMadrigal" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS6" id_arme="a3278f0d-7adf-4076-b0f8-e90df265722c" parent_id_arme="1399fed4-ca47-40ca-a84e-559ba3796ac1">
+    <if_variable name="madrigalDest" comparator="EQUALS" value="6.0" />
+    <if_variable name="setMadrigal" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Madrigal" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Madrigal" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS6" value2="1" name="CST Madrigal" />
+    <set_variable name="setMadrigal" value="0.0" integer="yes" />
+  </event>
+  <folder_arme name="CST Mayflower" id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e" parent_id_arme="65d4f17b-c60c-4a39-baea-b5d48eba249c" />
+  <event name="arriveDS1" id_arme="9cd99701-27cb-43ee-b527-30f4371630ed" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="setMayflower" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Mayflower" name2="DS1" comparator="LESS" value="1000.0" />
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="1.0" />
+    <set_variable name="setMayflower" value="1.0" integer="yes" />
+    <set_variable name="mayflowerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS2" id_arme="199bb2af-2af9-43bb-bdfa-67452b4684aa" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="setMayflower" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Mayflower" name2="DS2" comparator="LESS" value="1000.0" />
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="2.0" />
+    <set_variable name="setMayflower" value="1.0" integer="yes" />
+    <set_variable name="mayflowerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS3" id_arme="8252a15e-2226-4193-bd86-34f23418620a" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="setMayflower" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Mayflower" name2="DS3" comparator="LESS" value="1000.0" />
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="3.0" />
+    <set_variable name="setMayflower" value="1.0" integer="yes" />
+    <set_variable name="mayflowerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS4" id_arme="db93ac21-4844-465c-a72c-00ed29d021b9" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="setMayflower" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Mayflower" name2="DS4" comparator="LESS" value="1000.0" />
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="4.0" />
+    <set_variable name="setMayflower" value="1.0" integer="yes" />
+    <set_variable name="mayflowerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS5" id_arme="ce106594-07c8-46be-a4d2-8d6590549539" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="setMayflower" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Mayflower" name2="DS5" comparator="LESS" value="1000.0" />
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="5.0" />
+    <set_variable name="setMayflower" value="1.0" integer="yes" />
+    <set_variable name="mayflowerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS6" id_arme="57da24c8-26f5-4368-b656-4a70d859e34a" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="setMayflower" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Mayflower" name2="DS6" comparator="LESS" value="1000.0" />
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="6.0" />
+    <set_variable name="setMayflower" value="1.0" integer="yes" />
+    <set_variable name="mayflowerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="destDS1" id_arme="367e8280-7bf5-4ea9-9923-55e41d60cce6" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="1.0" />
+    <if_variable name="setMayflower" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Mayflower" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Mayflower" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS1" value2="1" name="CST Mayflower" />
+    <set_variable name="setMayflower" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS2" id_arme="093eaba1-f3fc-492c-81b2-fca943f4fd04" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="2.0" />
+    <if_variable name="setMayflower" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Mayflower" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Mayflower" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS2" value2="1" name="CST Mayflower" />
+    <set_variable name="setMayflower" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS3" id_arme="c313523e-e0c5-4f83-bcd5-2cd00c90b484" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="3.0" />
+    <if_variable name="setMayflower" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Mayflower" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Mayflower" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS3" value2="1" name="CST Mayflower" />
+    <set_variable name="setMayflower" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS4" id_arme="701a42f4-15c2-4066-9b49-57078424ddf7" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="4.0" />
+    <if_variable name="setMayflower" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Mayflower" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Mayflower" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS4" value2="1" name="CST Mayflower" />
+    <set_variable name="setMayflower" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS5" id_arme="76065ba7-db46-4f93-9b3d-953029000358" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="5.0" />
+    <if_variable name="setMayflower" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Mayflower" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Mayflower" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS5" value2="1" name="CST Mayflower" />
+    <set_variable name="setMayflower" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS6" id_arme="64a0863e-fca0-4a5e-810f-a51dffb3be8b" parent_id_arme="4379410f-00a0-4a9a-9cf3-e36b5aab905e">
+    <if_variable name="mayflowerDest" comparator="EQUALS" value="6.0" />
+    <if_variable name="setMayflower" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Mayflower" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Mayflower" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS6" value2="1" name="CST Mayflower" />
+    <set_variable name="setMayflower" value="0.0" integer="yes" />
+  </event>
+  <folder_arme name="CST Terrapin" id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7" parent_id_arme="65d4f17b-c60c-4a39-baea-b5d48eba249c" />
+  <event name="arriveDS1" id_arme="0eb78be0-7558-4919-b400-1dacddefe499" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="setTerrapin" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Terrapin" name2="DS1" comparator="LESS" value="1000.0" />
+    <if_variable name="terrapinDest" comparator="EQUALS" value="1.0" />
+    <set_variable name="setTerrapin" value="1.0" integer="yes" />
+    <set_variable name="terrapinDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS2" id_arme="d48b79aa-3a54-489b-aa2c-0fce1ded9823" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="setTerrapin" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Terrapin" name2="DS2" comparator="LESS" value="1000.0" />
+    <if_variable name="terrapinDest" comparator="EQUALS" value="2.0" />
+    <set_variable name="setTerrapin" value="1.0" integer="yes" />
+    <set_variable name="terrapinDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS3" id_arme="4ea17690-d1d6-4287-a8ae-be56ccdad06c" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="setTerrapin" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Terrapin" name2="DS3" comparator="LESS" value="1000.0" />
+    <if_variable name="terrapinDest" comparator="EQUALS" value="3.0" />
+    <set_variable name="setTerrapin" value="1.0" integer="yes" />
+    <set_variable name="terrapinDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS4" id_arme="997abbab-4650-4743-b697-2a5106f87bf0" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="setTerrapin" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Terrapin" name2="DS4" comparator="LESS" value="1000.0" />
+    <if_variable name="terrapinDest" comparator="EQUALS" value="4.0" />
+    <set_variable name="setTerrapin" value="1.0" integer="yes" />
+    <set_variable name="terrapinDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS5" id_arme="d0582e43-133f-4999-bff0-50a7d58db651" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="setTerrapin" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Terrapin" name2="DS5" comparator="LESS" value="1000.0" />
+    <if_variable name="terrapinDest" comparator="EQUALS" value="5.0" />
+    <set_variable name="setTerrapin" value="1.0" integer="yes" />
+    <set_variable name="terrapinDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS6" id_arme="bb0ce6c9-9462-4933-ac7e-8b837c22ba7e" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="setTerrapin" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Terrapin" name2="DS6" comparator="LESS" value="1000.0" />
+    <if_variable name="terrapinDest" comparator="EQUALS" value="6.0" />
+    <set_variable name="setTerrapin" value="1.0" integer="yes" />
+    <set_variable name="terrapinDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="destDS1" id_arme="32291c8d-1067-48a7-89fa-4a39adc41f7e" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="terrapinDest" comparator="EQUALS" value="1.0" />
+    <if_variable name="setTerrapin" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Terrapin" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Terrapin" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS1" value2="1" name="CST Terrapin" />
+    <set_variable name="setTerrapin" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS2" id_arme="742f32b6-685c-4136-a68e-f449b66e4673" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="terrapinDest" comparator="EQUALS" value="2.0" />
+    <if_variable name="setTerrapin" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Terrapin" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Terrapin" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS2" value2="1" name="CST Terrapin" />
+    <set_variable name="setTerrapin" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS3" id_arme="0f98ff24-a06e-4bd3-a68e-4f4d077bab62" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="terrapinDest" comparator="EQUALS" value="3.0" />
+    <if_variable name="setTerrapin" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Terrapin" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Terrapin" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS3" value2="1" name="CST Terrapin" />
+    <set_variable name="setTerrapin" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS4" id_arme="6ddefcbc-dafe-4188-84cc-505cc7f059a3" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="terrapinDest" comparator="EQUALS" value="4.0" />
+    <if_variable name="setTerrapin" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Terrapin" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Terrapin" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS4" value2="1" name="CST Terrapin" />
+    <set_variable name="setTerrapin" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS5" id_arme="19d2d72d-e375-4e42-bfdd-577cbcd8961b" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="terrapinDest" comparator="EQUALS" value="5.0" />
+    <if_variable name="setTerrapin" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Terrapin" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Terrapin" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS5" value2="1" name="CST Terrapin" />
+    <set_variable name="setTerrapin" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS6" id_arme="5a2f15eb-1a67-441f-b716-f86e2684df44" parent_id_arme="97e00d31-6eed-40a0-a598-95711c1eebc7">
+    <if_variable name="terrapinDest" comparator="EQUALS" value="6.0" />
+    <if_variable name="setTerrapin" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Terrapin" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Terrapin" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS6" value2="1" name="CST Terrapin" />
+    <set_variable name="setTerrapin" value="0.0" integer="yes" />
+  </event>
+  <folder_arme name="CST Voyager" id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450" parent_id_arme="65d4f17b-c60c-4a39-baea-b5d48eba249c" />
+  <event name="arriveDS1" id_arme="412f5d9e-26fe-461d-a462-dcaececb128e" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS1" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="1.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS2" id_arme="46c3269a-365a-4504-9ae7-cf2ec8e95d8b" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS2" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="2.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS3" id_arme="0b8fc96f-ae13-4e88-bd82-187c041492c3" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS3" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="3.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS4" id_arme="a4859c7b-5537-42b3-9e74-a9d1df7b3c7b" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS4" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="4.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS5" id_arme="025deb0c-052f-45f4-9803-e8d57d58e089" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS5" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="5.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS6" id_arme="20291659-d574-4c33-917f-bed282a9a8b6" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS6" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="6.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="destDS1" id_arme="2a2e1046-5a9a-44a9-89e5-28e46a09bb90" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="1.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS1" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS2" id_arme="e5a062a3-66b6-4f36-a6bc-217f9e227e5f" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="2.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS2" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS3" id_arme="b05babf0-bfee-4d11-b732-dee20b33cf6b" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="3.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS3" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS4" id_arme="a6814e6a-d236-4976-8272-c57989eb23b0" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="4.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS4" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS5" id_arme="712b1210-bb3e-4b64-9f0d-eabaa8bd8bf5" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="5.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS5" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS6" id_arme="fc6d4fca-7c5e-45ed-8b3b-1c737f01f5a6" parent_id_arme="db6eebf5-6adb-4e4e-b262-2becfb372450">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="6.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS6" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <folder_arme name="Unregistered Ship" id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac" expanded_arme="" />
+  <folder_arme name="Trigger" id_arme="bf69339e-be78-46bf-868a-371fd5f408bc" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac" />
+  <event name="DS1" id_arme="66599164-f0e6-45cc-ae9f-6b60676fa187" parent_id_arme="bf69339e-be78-46bf-868a-371fd5f408bc">
+    <if_distance name1="Artemis" name2="DS1" comparator="LESS" value="10000.0" />
+    <if_variable name="checkedDS1" comparator="EQUALS" value="0.0" />
+    <set_variable name="stationsVisited" value="stationsVisited + 1" integer="yes" />
+    <set_variable name="checkedDS1" value="1.0" integer="yes" />
+  </event>
+  <event name="DS2" id_arme="186955dd-2d28-4e99-bdd0-61caf903df48" parent_id_arme="bf69339e-be78-46bf-868a-371fd5f408bc">
+    <if_distance name1="Artemis" name2="DS2" comparator="LESS" value="10000.0" />
+    <if_variable name="checkedDS2" comparator="EQUALS" value="0.0" />
+    <set_variable name="stationsVisited" value="stationsVisited+1" integer="yes" />
+    <set_variable name="checkedDS2" value="1.0" integer="yes" />
+  </event>
+  <event name="DS3" id_arme="4fa7aae9-f094-4ae5-9bd7-b31f2f61c318" parent_id_arme="bf69339e-be78-46bf-868a-371fd5f408bc">
+    <if_distance name1="Artemis" name2="DS3" comparator="LESS" value="10000.0" />
+    <if_variable name="checkedDS3" comparator="EQUALS" value="0.0" />
+    <set_variable name="stationsVisited" value="stationsVisited+1" integer="yes" />
+    <set_variable name="checkedDS3" value="1.0" integer="yes" />
+  </event>
+  <event name="DS4" id_arme="bbe24b29-aee6-4979-bea6-9b9435a804bf" parent_id_arme="bf69339e-be78-46bf-868a-371fd5f408bc">
+    <if_distance name1="Artemis" name2="DS4" comparator="LESS" value="10000.0" />
+    <if_variable name="checkedDS4" comparator="EQUALS" value="0.0" />
+    <set_variable name="stationsVisited" value="stationsVisited+1" integer="yes" />
+    <set_variable name="checkedDS4" value="1.0" integer="yes" />
+  </event>
+  <event name="DS5" id_arme="e9f9596a-e416-4304-8f7c-d6b63afde3af" parent_id_arme="bf69339e-be78-46bf-868a-371fd5f408bc">
+    <if_distance name1="Artemis" name2="DS5" comparator="LESS" value="10000.0" />
+    <if_variable name="checkedDS5" comparator="EQUALS" value="0.0" />
+    <set_variable name="stationsVisited" value="stationsVisited+1" integer="yes" />
+    <set_variable name="checkedDS5" value="1.0" integer="yes" />
+  </event>
+  <event name="DS6" id_arme="437e7710-c12d-4279-ab94-cc503c2704ad" parent_id_arme="bf69339e-be78-46bf-868a-371fd5f408bc">
+    <if_distance name1="Artemis" name2="DS6" comparator="LESS" value="10000.0" />
+    <if_variable name="checkedDS6" comparator="EQUALS" value="0.0" />
+    <set_variable name="stationsVisited" value="stationsVisited+1" integer="yes" />
+    <set_variable name="checkedDS6" value="1.0" integer="yes" />
+  </event>
+  <event name="Time Elapsed" id_arme="804de7e1-9d1a-4ed1-bf67-7ed1cf56971a" parent_id_arme="bf69339e-be78-46bf-868a-371fd5f408bc">
+    <if_timer_finished name="unregShip" />
+    <if_variable name="stationsVisited" comparator="LESS" value="2.0" />
+    <set_variable name="stationsVisited" value="stationsVisited+2.0" integer="yes" />
+  </event>
+  <folder_arme name="Unregistered Ship AI" id_arme="0fcc77f5-615b-497f-b824-bf644f933aa2" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac" expanded_arme="" />
+  <folder_arme name="Voyager" id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a" parent_id_arme="0fcc77f5-615b-497f-b824-bf644f933aa2" />
+  <event name="arriveDS1" id_arme="14d47e21-b01e-4d34-b419-a95c173cdb99" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS1" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="1.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS2" id_arme="d30e78f0-fa5b-4081-bb35-762a7f42a1bb" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS2" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="2.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS3" id_arme="574b6054-9a55-44a7-9605-65b3a4483089" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS3" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="3.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS4" id_arme="1670224a-a632-4be3-8db1-8d64df235124" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS4" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="4.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS5" id_arme="074720b7-0700-45e5-bafd-695360b98dab" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS5" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="5.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS6" id_arme="76f0cf82-1b69-464f-b061-24c9e09dbca6" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="CST Voyager" name2="DS6" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="6.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="destDS1" id_arme="f29b4ad1-d820-4b73-bffd-c9b6f04cc98d" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="1.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS1" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS2" id_arme="bd47f500-b1a9-433e-917b-b89f87cd12fc" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="2.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS2" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS3" id_arme="2c822ccf-e8ec-4243-993f-18944f411fd1" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="3.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS3" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS4" id_arme="3216298f-b549-4551-96bc-10c670a81dc6" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="4.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS4" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS5" id_arme="aad2644a-5916-469f-a0f5-7cebe31c35d1" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="5.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS5" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS6" id_arme="9802556c-87cf-4b35-9cf1-16f9dce62490" parent_id_arme="ef543a32-6ec5-4f68-a656-183abf9b0e7a">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="6.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="CST Voyager" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Voyager" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS6" value2="1" name="CST Voyager" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <folder_arme name="Unknown" id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d" parent_id_arme="0fcc77f5-615b-497f-b824-bf644f933aa2" />
+  <event name="arriveDS1" id_arme="6a15a121-b6c8-4773-9a04-99d7e9917d2c" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="Unknown" name2="DS1" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="1.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS2" id_arme="a149c9fe-fc6d-4106-b464-40cf81b20496" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="Unknown" name2="DS2" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="2.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS3" id_arme="a2d63aa6-fdcd-4c47-a56d-92d7b6a1bf49" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="Unknown" name2="DS3" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="3.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS4" id_arme="430c90ab-75b6-43e7-a8e7-c086016b6629" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="Unknown" name2="DS4" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="4.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS5" id_arme="4580b6f5-0523-4269-9f9b-057fc6ea3c71" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="Unknown" name2="DS5" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="5.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="arriveDS6" id_arme="420ca589-19e6-415d-85e2-0309fb4487bf" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="setVoyager" comparator="EQUALS" value="0.0" />
+    <if_distance name1="Unknown" name2="DS6" comparator="LESS" value="1000.0" />
+    <if_variable name="voyagerDest" comparator="EQUALS" value="6.0" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+  </event>
+  <event name="destDS1" id_arme="2bd41f66-9fca-4320-9356-ab3d58d73732" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="1.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="Unknown" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="Unknown" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS1" value2="1" name="Unknown" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS2" id_arme="d0463198-c55b-4eba-aaf8-f4cee23cdcf7" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="2.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="Unknown" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="Unknown" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS2" value2="1" name="Unknown" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS3" id_arme="d62603c9-f18e-4c02-86db-42a5819f7ab1" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="3.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="Unknown" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="Unknown" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS3" value2="1" name="Unknown" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS4" id_arme="a815afdd-c4be-4b41-904b-0c28abffb804" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="4.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="Unknown" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="Unknown" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS4" value2="1" name="Unknown" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS5" id_arme="64e0006b-df82-4f13-b4d7-640421e22209" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="5.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="Unknown" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="CST Mayflower" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS5" value2="1" name="Unknown" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="destDS6" id_arme="58d8b153-4441-4a5a-9444-5f6d6074f012" parent_id_arme="3a9c7859-5337-443b-b134-bd6c7a76263d">
+    <if_variable name="voyagerDest" comparator="EQUALS" value="6.0" />
+    <if_variable name="setVoyager" comparator="EQUALS" value="1.0" />
+    <clear_ai name="Unknown" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="Unknown" />
+    <add_ai type="TARGET_THROTTLE" value1="5.0" targetName="DS6" value2="1" name="Unknown" />
+    <set_variable name="setVoyager" value="0.0" integer="yes" />
+  </event>
+  <event name="Unregistered Ship Arrive" id_arme="0b827fd2-d8e3-4a96-b937-fc5187812636" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac">
+    <if_variable name="stationsVisited" comparator="GREATER_EQUAL" value="2.0" />
+    <if_variable name="unregShipArrived" comparator="EQUALS" value="0.0" />
+    <set_variable name="unregShipArrived" value="1.0" integer="yes" />
+    <set_timer name="unregShipAI" seconds="2" />
+    <set_variable name="unregShipAI" value="0.0" integer="yes" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <create type="neutral" x="0.0" y="0.0" z="80000.0" angle="310" name="Unknown" raceKeys="Terran" hullKeys="Bulk Cargo" sideValue="0" fleetnumber="-1" />
+  </event>
+  <event name="Unregistered Ship AI" id_arme="77aa3afe-2c29-48a8-b0af-c1f796dbecf6" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac">
+    <if_timer_finished name="unregShipAI" />
+    <if_variable name="unregShipAI" comparator="EQUALS" value="0.0" />
+    <set_variable name="unregShipAI" value="1.0" integer="yes" />
+    <clear_ai name="Unregistered Ship" />
+    <add_ai type="FOLLOW_COMMS_ORDERS" name="Unknown" />
+    <set_ship_text name="Unknown" desc="An unregistered vessel with the profile of a cargo ship." hailtext="This is the CST Voyager, how can we help you?" />
+    <set_variable name="unregShipScanned" value="0.0" integer="yes" />
+    <set_variable name="unregShipRegistered" value="0.0" integer="yes" />
+    <warning_popup_message message="There is an urgent communique from TSB Orion." consoles="MHWESC" name="Artemis" />
+    <set_comms_button text="Receive TSB Orion Communique" sideValue="2" />
+  </event>
+  <event name="Receive communique" id_arme="893cf2d6-c2bf-4f71-912a-2b91887d350d" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac">
+    <if_comms_button text="Receive TSB Orion Communique" />
+    <incoming_comms_text from="TSB Orion" sideValue="2" type="STATION">TSN Artemis, be advised, an unregistered ship has appeared on long-range sensors. There have been recent reports of Pirate activity in the area. You are hereby ordered to locate and identify the ship. If friendly, order it to register with the Sector Magistrate at TSB Orion. If not, eliminate the hostile and ensure the security of this sector.</incoming_comms_text>
+    <clear_comms_button text="Receive TSB Orion Communique" sideValue="2" />
+  </event>
+  <event name="Ship Scanned" id_arme="432b304c-1dbe-477f-a71f-4cb047f78a5c" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac">
+    <if_scan_level name="Unknown" side="2" comparator="EQUALS" value="2" />
+    <if_variable name="unregShipScanned" comparator="EQUALS" value="0.0" />
+    <set_side_value value="2" name="Unknown" />
+    <set_ship_text name="Unknown" newname="CST Voyager" desc="The Terran cargo ship Voyager" scan_desc="This ship is unregistered in the sector. Order it to register at TSB Orion." />
+    <set_variable name="unregShipScanned" value="1.0" integer="yes" />
+  </event>
+  <event name="Visual Inspection" id_arme="16b09aca-4ed1-4b94-a3bd-94f92ba5e940" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac">
+    <if_distance name1="Artemis" name2="Unknown" comparator="LESS" value="5000.0" />
+    <if_variable name="unregShipScanned" comparator="EQUALS" value="0.0" />
+    <set_side_value value="2" name="Unknown" />
+    <set_ship_text name="Unknown" newname="CST Voyager" desc="The Terran cargo ship Voyager" scan_desc="This ship is unregistered in the sector. Order it to register at TSB Orion." />
+    <set_variable name="unregShipScanned" value="1.0" integer="yes" />
+  </event>
+  <event name="Order registration" id_arme="fc990df7-5fb4-4769-97cd-4a4045c7238a" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac">
+    <if_scan_level name="CST Voyager" side="2" comparator="EQUALS" value="2" />
+    <if_variable name="unregShipRegistered" comparator="EQUALS" value="0.0" />
+    <set_comms_button text="Order CST Voyager to register with TSB Orion" sideValue="2" />
+  </event>
+  <event name="Registration ordered" id_arme="7b31ffc9-5eb1-459a-a9dc-af8298d4b0e2" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac">
+    <if_comms_button text="Order CST Voyager to register with TSB Orion" />
+    <set_variable name="unregShipRegistered" value="1.0" integer="yes" />
+    <add_ai type="TARGET_THROTTLE" value1="2.0" targetName="TSB Orion" value2="1" name="CST Voyager" />
+    <incoming_comms_text from="CST Voyager" sideValue="2" type="FRIEND">Acknowleged, TSN Artemis. Our apologies, it won't happen again.</incoming_comms_text>
+    <clear_comms_button text="Order CST Voyager to register with TSB Orion" sideValue="2" />
+    <set_ship_text name="CST Voyager" scan_desc="Enroute to TSB Orion for registration." />
+    <set_variable name="beginRegistration" value="0.0" integer="yes" />
+    <set_timer name="pirateAttack" seconds="60" />
+    <set_variable name="pirateAttack" value="0.0" integer="yes" />
+  </event>
+  <event name="Registration Complete" id_arme="6253a782-d058-4782-a585-de19ccd85729" parent_id_arme="1874388e-66ab-45b3-a007-e6ae7fdbcfac">
+    <if_distance name1="CST Voyager" name2="TSB Orion" comparator="LESS" value="5000.0" />
+    <if_variable name="beginRegistration" comparator="EQUALS" value="0.0" />
+    <set_variable name="voyagerDest" randomIntLow="1" randomIntHigh="6" integer="yes" />
+    <set_variable name="setVoyager" value="1.0" integer="yes" />
+    <set_ship_text name="CST Voyager" scan_desc="Registration complete." />
+    <set_variable name="beginRegistration" value="1.0" integer="yes" />
+  </event>
+  <folder_arme name="Pirate Attack" id_arme="faad20e2-67a4-4114-8254-3912b9a25869" />
+  <event name="Add AI" id_arme="873bd105-4207-45df-a9c5-17cdde181383" parent_id_arme="faad20e2-67a4-4114-8254-3912b9a25869">
+    <if_variable name="addPirateAI" comparator="EQUALS" value="0.0" />
+    <if_timer_finished name="addPirateAI" />
+    <set_variable name="addPirateAI" value="1.0" integer="yes" />
+    <add_ai type="ATTACK" targetName="DS4" value1="5.0" name="Pirates" />
+    <add_ai type="CHASE_PLAYER" value1="5000" value2="5000" name="Pirates" />
+    <warning_popup_message message="TSB Orion to TSN Artemis. A pirate light cruiser is inbound for DS4 at high speed. Make haste and destroy the cruiser!." consoles="MHWESC" name="Artemis" />
+    <set_variable name="launchShuttle" value="0.0" integer="yes" />
+  </event>
+  <event name="Create Pirate" id_arme="e5986c4f-2aa1-470a-b528-06192be8994a" parent_id_arme="faad20e2-67a4-4114-8254-3912b9a25869">
+    <if_timer_finished name="pirateAttack" />
+    <if_variable name="pirateAttack" comparator="EQUALS" value="0.0" />
+    <set_timer name="addPirateAI" seconds="2" />
+    <set_variable name="addPirateAI" value="0.0" integer="yes" />
+    <create type="enemy" x="90000.0" y="0.0" z="10000.0" angle="190" name="Pirates" raceKeys="TSN" hullKeys="Light Cruiser" sideValue="1" fleetnumber="11" />
+    <set_variable name="pirateAttack" value="1.0" integer="yes" />
+  </event>
+  <folder_arme name="Boarding Party" id_arme="bdab31ab-4709-4b8b-b223-04a11a83470f" parent_id_arme="faad20e2-67a4-4114-8254-3912b9a25869" expanded_arme="" />
+  <event name="Launch Shuttle (Station)" id_arme="02a402a0-7c2c-4996-a19a-9eba6f305475" parent_id_arme="bdab31ab-4709-4b8b-b223-04a11a83470f">
+    <if_distance name1="Pirates" name2="DS4" comparator="LESS" value="5000.0" />
+    <if_variable name="launchShuttle" comparator="EQUALS" value="0.0" />
+    <set_variable name="launchShuttle" value="1.0" integer="yes" />
+    <get_object_property property="positionX" name="Pirates" variable="shuttlePosX" />
+    <get_object_property property="positionY" name="Pirates" variable="shuttlePosY" />
+    <get_object_property property="positionZ" name="Pirates" variable="shuttlePosZ" />
+    <create type="enemy" x="shuttlePosX" y="shuttlePosY" z="shuttlePosZ" angle="180" name="Pirate Shuttle" raceKeys="TSN" hullKeys="TSN Shuttle" sideValue="1" fleetnumber="-1" />
+    <set_variable name="addShuttleAI" value="0.0" integer="yes" />
+    <set_timer name="addShuttleAI" seconds="2" />
+    <set_variable name="stationBoarded" value="0.0" integer="yes" />
+  </event>
+  <event name="Launch Shuttle (Player)" id_arme="23bd46ff-902e-409c-9046-6d2ba61a8f0a" parent_id_arme="bdab31ab-4709-4b8b-b223-04a11a83470f">
+    <if_distance name1="Pirates" name2="Artemis" comparator="LESS" value="5000.0" />
+    <if_variable name="launchShuttle" comparator="EQUALS" value="0.0" />
+    <set_variable name="launchShuttle" value="1.0" integer="yes" />
+    <get_object_property property="positionX" name="Pirates" variable="shuttlePosX" />
+    <get_object_property property="positionY" name="Pirates" variable="shuttlePosY" />
+    <get_object_property property="positionZ" name="Pirates" variable="shuttlePosZ" />
+    <create type="enemy" x="shuttlePosX" y="shuttlePosY" z="shuttlePosZ" angle="180" name="Pirate Shuttle" raceKeys="TSN" hullKeys="TSN Shuttle" sideValue="1" fleetnumber="-1" />
+    <set_variable name="addShuttleAI" value="0.0" integer="yes" />
+    <set_timer name="addShuttleAI" seconds="2" />
+    <set_variable name="stationBoarded" value="0.0" integer="yes" />
+  </event>
+  <event name="Add AI" id_arme="a64c7470-e65b-4fef-896c-8f818eb0d1ec" parent_id_arme="bdab31ab-4709-4b8b-b223-04a11a83470f">
+    <if_variable name="addShuttleAI" comparator="EQUALS" value="0.0" />
+    <if_timer_finished name="addShuttleAI" />
+    <set_variable name="addShuttleAI" value="1.0" integer="yes" />
+    <clear_ai name="Pirate Shuttle" />
+    <add_ai type="POINT_THROTTLE" value1="94340.0" value2="0.0" value3="49000.0" value4="7.0" name="Pirate Shuttle" />
+  </event>
+  <event name="Rading Party" id_arme="8bbaa2ce-1817-483f-aaac-4540e82d4196" parent_id_arme="bdab31ab-4709-4b8b-b223-04a11a83470f">
+    <if_distance name1="Pirate Shuttle" name2="DS4" comparator="LESS" value="500.0" />
+    <if_variable name="stationBoarded" comparator="EQUALS" value="0.0" />
+    <incoming_comms_text from="DS4" sideValue="2" type="ALERT STATION">TSN Artemis, this is DS4. We have been boarded by a pirate raiding party. We require immeadiate assistance! Please dock as soon as possible!</incoming_comms_text>
+    <warning_popup_message message="DS4 has been boarded!" consoles="MHWESC" name="Artemis" />
+    <set_variable name="stationBoarded" value="1.0" integer="yes" />
+  </event>
+  <folder_arme name="Tabletop Intermission" id_arme="d1e98c80-89d8-40a5-9744-0f9d98e7a72d" expanded_arme="" />
+  <folder_arme name="First Contact" id_arme="01ebe02c-623a-403d-976c-185590c04507" expanded_arme="" />
+  <event name="Unusual Sensor Readings" id_arme="664712c3-7be6-4b96-9616-e11c5071aa25" parent_id_arme="01ebe02c-623a-403d-976c-185590c04507">
+    <if_gm_button text="Start First Contact" />
+    <incoming_comms_text from="TSB Orion" sideValue="2" type="ALERT STATION">TSN Artemis, we have detected unusual sensor reading from sub-sector B5. Request you proceed to the area and investigate.</incoming_comms_text>
+    <warning_popup_message message="TSB Orion hailing TSN Artemis" consoles="MHWESC" name="Artemis" />
+    <set_variable name="spawnKraliens" value="0.0" integer="yes" />
+    <clear_gm_button text="Start First Contact" />
+  </event>
+  <event name="Spawn Kraliens" id_arme="3a6c9482-74ce-4628-9a93-e7d5c96857c8" parent_id_arme="01ebe02c-623a-403d-976c-185590c04507">
+    <if_inside_box name="Artemis" leastX="0.0" leastZ="20000.0" mostX="20000.0" mostZ="40000.0" />
+    <if_variable name="spawnKraliens" comparator="EQUALS" value="0.0" />
+    <set_timer name="kralienAI" seconds="2" />
+    <set_variable name="kralienAI" value="0.0" integer="yes" />
+    <create type="enemy" x="5000.0" y="0.0" z="30000.0" angle="270" name="Bogey 1" raceKeys="Kralien" hullKeys="Battleship" sideValue="1" fleetnumber="21" />
+    <create type="enemy" x="4500.0" y="0.0" z="29500.0" angle="270" name="Bogey 2" raceKeys="Kralien" hullKeys="Light Cruiser" sideValue="1" fleetnumber="21" />
+    <create type="enemy" x="4500.0" y="0.0" z="30500.0" angle="270" name="Bogey 3" raceKeys="Kralien" hullKeys="Light Cruiser" sideValue="1" fleetnumber="21" />
+    <set_variable name="spawnKraliens" value="1.0" integer="yes" />
+  </event>
+  <event name="Kralien AI" id_arme="2d11be3f-7eda-4aa6-80d8-8825d9858d4b" parent_id_arme="01ebe02c-623a-403d-976c-185590c04507">
+    <if_timer_finished name="kralienAI" />
+    <if_variable name="kralienAI" comparator="EQUALS" value="0.0" />
+    <set_variable name="kralienAI" value="1.0" integer="yes" />
+    <clear_ai name="Bogey 1" />
+    <clear_ai name="Bogey 2" />
+    <clear_ai name="Bogey 3" />
+    <set_gm_button text="Kraliens Attack" />
+  </event>
+  <event name="Attack" id_arme="73c1a718-e9dd-4873-8ff7-cac96f509b60" parent_id_arme="01ebe02c-623a-403d-976c-185590c04507">
+    <if_gm_button text="Kraliens Attack" />
+    <add_ai type="TRY_TO_BECOME_LEADER" name="Bogey 1" />
+    <add_ai type="CHASE_PLAYER" name="Bogey 1" />
+    <add_ai type="CHASE_PLAYER" name="Bogey 2" />
+    <add_ai type="CHASE_PLAYER" name="Bogey 3" />
+    <add_ai type="CHASE_STATION" name="Bogey 1" />
+    <add_ai type="CHASE_STATION" name="Bogey 2" />
+    <add_ai type="CHASE_STATION" name="Bogey 3" />
+    <add_ai type="CHASE_PLAYER" value1="3000" value2="500" name="Bogey 1" />
+    <add_ai type="CHASE_PLAYER" value1="3000" value2="500" name="Bogey 2" />
+    <add_ai type="CHASE_PLAYER" value1="3000" value2="500" name="Bogey 3" />
+    <add_ai type="CHASE_ANGER" name="Bogey 1" />
+    <add_ai type="CHASE_ANGER" name="Bogey 2" />
+    <add_ai type="CHASE_ANGER" name="Bogey 3" />
+    <add_ai type="LEADER_LEADS" name="Bogey 1" />
+    <add_ai type="FOLLOW_LEADER" name="Bogey 2" />
+    <add_ai type="FOLLOW_LEADER" name="Bogey 3" />
+    <clear_gm_button text="Kraliens Attack" />
+    <set_variable name="kraliensAttack" value="1.0" integer="yes" />
+  </event>
+  <folder_arme name="End" id_arme="40efa506-34aa-4b99-8781-2d60295b70ee" expanded_arme="" />
+  <event name="Victory" id_arme="9bb4b547-9a9c-4e2b-a3d9-015a785139d5" parent_id_arme="40efa506-34aa-4b99-8781-2d60295b70ee">
+    <if_exists name="TSB Orion" />
+    <if_not_exists name="Bogey 1" />
+    <if_not_exists name="Bogey 2" />
+    <if_not_exists name="Bogey 3" />
+    <if_variable name="kraliensAttack" comparator="EQUALS" value="1.0" />
+    <end_mission />
+  </event>
+</mission_data>
